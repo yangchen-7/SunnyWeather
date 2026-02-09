@@ -15,16 +15,20 @@ class PlaceViewModel : ViewModel() {
 
     private val searchLiveData = MutableLiveData<String>()
 
+    //对界面上显示的城市数据进行缓存
     val placeList = ArrayList<Place>()
 
+    //用switchMap方法观察对象，否则返回的livedata对象无法进行观察
     val placeLiveData = searchLiveData.switchMap { query ->
+        //调用仓库层的方法进行网络请求，并将返回的livedata对象转换成可供activity观察的livedata对象
         Repository.searchPlaces(query)
     }
-
+    ////将传入的搜索参数赋值给searchLiveData对象，
     fun searchPlaces(query : String){
         searchLiveData.value = query
     }
 
+    //封装仓库层中的存储
     fun savePlace(place: Place) = Repository.savePlace(place)
 
     fun getSavedPlace() = Repository.getSavedPlace()

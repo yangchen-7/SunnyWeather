@@ -13,11 +13,8 @@ import android.widget.RelativeLayout
 import android.widget.ScrollView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -25,7 +22,6 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.sunnyweather.android.R
 import com.sunnyweather.android.logic.model.Weather
 import com.sunnyweather.android.logic.model.getSky
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.Locale
 
@@ -37,10 +33,12 @@ class WeatherActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_weather)
 
+        //将状态栏设为透明
         val decorView = window.decorView
         decorView.systemUiVisibility = View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN or View.SYSTEM_UI_FLAG_LAYOUT_STABLE
         window.statusBarColor = Color.TRANSPARENT
 
+        //取出经纬坐标和地区名称
         if (viewModel.locationLng.isEmpty()){
             viewModel.locationLng = intent.getStringExtra("location_lng") ?: ""
         }
@@ -103,6 +101,7 @@ class WeatherActivity : AppCompatActivity() {
         swipeRefresh.isRefreshing = true
     }
 
+    //填充数据
     private fun showWeatherInfo(weather: Weather) {
         val placeName : TextView = findViewById(R.id.placeName)
         val currentTemp : TextView = findViewById(R.id.currentTemp)

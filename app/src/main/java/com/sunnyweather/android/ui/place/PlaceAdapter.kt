@@ -27,8 +27,6 @@ class PlaceAdapter(private val fragment: PlaceFragment,private val placeList: Li
         holder.itemView.setOnClickListener {
             val position = holder.adapterPosition
             val place = placeList[position]
-
-
             //对PlaceFragment所处的Activity进行判断
             val activity = fragment.activity
             if (activity is WeatherActivity){
@@ -49,7 +47,7 @@ class PlaceAdapter(private val fragment: PlaceFragment,private val placeList: Li
                 fragment.startActivity(intent)
                 fragment.activity?.finish()
             }
-
+            //保存数据
             fragment.viewModel.savePlace(place)
 
         }

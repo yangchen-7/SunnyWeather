@@ -20,7 +20,7 @@ import com.sunnyweather.android.ui.weather.WeatherActivity
 
 
 class PlaceFragment : Fragment() {
-
+//获取viewModel实例
     val viewModel by lazy { ViewModelProvider(this).get(PlaceViewModel::class.java) }
 
     private lateinit var adapter: PlaceAdapter
@@ -54,11 +54,13 @@ class PlaceFragment : Fragment() {
         val searchPlaceEdit = view?.findViewById<EditText>(R.id.searchPlaceEdit)
         val bgImageView = view?.findViewById<ImageView>(R.id.bgImageView)
 
+        //给recycleview设置layoutManager和适配器
         val layoutManager = LinearLayoutManager(activity)
         recyclerView?.layoutManager = layoutManager
         adapter = PlaceAdapter(this,viewModel.placeList)
         recyclerView?.adapter = adapter
 
+        //监听搜索框内容的变化
         searchPlaceEdit?.doAfterTextChanged { editable ->
             val content = editable?.toString().orEmpty()
             if (content.isNotEmpty()){
@@ -71,8 +73,9 @@ class PlaceFragment : Fragment() {
             }
         }
 
-
+        //使用 viewLifecycleOwner 确保观察范围与 Fragment 的视图生命周期一致，避免内存泄漏
         viewModel.placeLiveData.observe(viewLifecycleOwner){ result ->
+            //result.getOrNull() 获取可能为空的地点列表（place）
             val place = result.getOrNull()
             if (place != null){
                 //显示

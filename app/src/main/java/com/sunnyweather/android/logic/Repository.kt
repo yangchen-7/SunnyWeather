@@ -12,9 +12,12 @@ import kotlinx.coroutines.coroutineScope
 
 object Repository {
     //仓库层统一的封装入口
+    //liveData能自动构建并返回一个LiveData对象，并且提供一个挂起函数的上下文
+    //Dispatchers.IO在子线程中进行网络请求
     fun searchPlaces(query : String) = liveData(Dispatchers.IO) {
         val result = try {
             val placeResponse = SunnyWeatherNetwork.searchPlaces(query)
+            //判断服务器响应的状态
             if (placeResponse.status == "ok"){
                 val places = placeResponse.places
                 Result.success(places)
@@ -60,6 +63,7 @@ object Repository {
         emit(result)
     }
 
+    //在仓库层实现接口封装
     fun savePlace(place: Place) = PlaceDao.savePlace(place)
 
     fun getSavedPlace() = PlaceDao.getSavedPlace()
